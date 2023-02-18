@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgressBar", "Labs WinForms\ProgressBar.csproj", "{9B27EF83-1231-48E4-8E75-44E576987224}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration", "Registration\Registration.csproj", "{F4BBAF62-CDEC-4356-B96B-6AB91475CA0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9B27EF83-1231-48E4-8E75-44E576987224}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B27EF83-1231-48E4-8E75-44E576987224}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B27EF83-1231-48E4-8E75-44E576987224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4BBAF62-CDEC-4356-B96B-6AB91475CA0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4BBAF62-CDEC-4356-B96B-6AB91475CA0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4BBAF62-CDEC-4356-B96B-6AB91475CA0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4BBAF62-CDEC-4356-B96B-6AB91475CA0B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
