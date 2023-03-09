@@ -13,15 +13,15 @@ namespace Registration
    
     public partial class CompliteForm : Form
     {
-       // public string password, login;
+       public string password, login;
 
        
         public CompliteForm()
         {       
             InitializeComponent();
            
-            label3.Text = RegForm.password;
-            label4.Text = RegForm.login;
+            label3.Text = AvtorisationForm.password;
+            label4.Text = AvtorisationForm.login;
 
         }     
     }
