@@ -55,13 +55,10 @@ namespace Registration
                 if(ReadFileAndCheckPass())
                 { 
                     Hide();
-                    login = textBox1.Text;
-                    password = textBox2.Text;
                     CompliteForm form2 = new CompliteForm();
-                    form2.password = "3";
                     form2.Show();
                 }
-                label5.Text = password + "Поля пустые";
+                label5.Text = password + "Поля 1пустые";
 
             }
             else
@@ -72,32 +69,31 @@ namespace Registration
         {
             string[] lines = File.ReadAllLines("SaveDate.txt");
             bool stopChar = false;
-            foreach(string line in lines)
+            bool startChar = false;
+            foreach (string line in lines)
             {
                 for (int i = 0; i < line.Length; i++)
                 {
-                    if (line[i] != ']' & stopChar)
+                    if (line[i] != ']' & stopChar == true)
                         password += line[i];
+                    if(line[i] == ']')
+                    {
+                        if (textBox2.Text == password & textBox1.Text.ToLower() == login.ToLower())
+                            return true;
+                    }
 
-                    if (line[i] != '[')
+                    if ((line[i] == '|'))
+                        startChar = true;
+
+                    if (line[i] != '['& startChar)
                         login += line[i];
                     else
-                    {
                         stopChar = true;
-                        i++;
-                    }
-                        
-
-                    
-
                 }
-
-                textBox1.Text = password;
-                textBox2.Text = login;
-                if (login == textBox1.Text.ToLower() & textBox2.Text == password)
-                    return true;
+             
                 password = "";
                 login = "";
+                stopChar = false;
 
 
             }

@@ -13,7 +13,7 @@ namespace Registration
    
     public partial class CompliteForm : Form
     {
-       public string password, login;
+        internal static string password2, login;
 
        
         public CompliteForm()

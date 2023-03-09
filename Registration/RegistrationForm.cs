@@ -27,7 +27,7 @@ namespace Registration
             {
                 if (CheckPass(textBox2.Text) & CheckPass(textBox3.Text))
                 {
-                    File.AppendAllText($"SaveDate.txt", $"{textBox1.Text.ToLower()}[{textBox2.Text}]\n");
+                    File.AppendAllText($"SaveDate.txt", $"|{textBox1.Text.ToLower()}[{textBox2.Text}]\n");
 
                     AvtorisationForm AvtForm= new AvtorisationForm();
                     Hide();
