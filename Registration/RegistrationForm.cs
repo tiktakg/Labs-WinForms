@@ -27,7 +27,7 @@ namespace Registration
             {
                 if (CheckPass(textBox2.Text) & CheckPass(textBox3.Text))
                 {
-                    File.AppendAllText($"SaveDate.txt", $"|{textBox1.Text.ToLower()}[{textBox2.Text}]\n");
+                    File.AppendAllText($"SaveDate.txt", $"\u0010{textBox1.Text.ToLower()}\u0001{textBox2.Text}\u0002\n");
 
                     AvtorisationForm AvtForm= new AvtorisationForm();
                     Hide();
@@ -35,7 +35,7 @@ namespace Registration
 
                 }
                 else
-                    label5.Text = "Пароли разные!";
+                    label5.Text = "Пароли разные или не проходят по форме!";
             }   
             else
                 label5.Text = "Поля пустые или пароли разные!";
@@ -45,17 +45,22 @@ namespace Registration
 
         private void button3_Click(object sender, EventArgs e)
         {
-            Close();
+            Hide();
+            AvtorisationForm form2 = new AvtorisationForm();
+            form2.Show();
         }
 
         private bool CheckPass(string pass)
         {
+            AvtorisationForm form2 = new AvtorisationForm();
+
             if ((pass.Length >= 6)
             && pass.Any(char.IsDigit)
             && pass.Any(char.IsLetter)
             && pass.Any(char.IsPunctuation)
             && pass.Any(char.IsLower)
-            && pass.Any(char.IsUpper))
+            && pass.Any(char.IsUpper)
+            && !form2.ReadFileAndCheckLogin(textBox1.Text.ToLower()))
                 return true;
             else
                 return false;
@@ -67,5 +72,6 @@ namespace Registration
             else
                 return false;
         }
+
     }
 }

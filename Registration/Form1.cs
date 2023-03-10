@@ -3,12 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Registration
 {
@@ -58,7 +60,7 @@ namespace Registration
                     CompliteForm form2 = new CompliteForm();
                     form2.Show();
                 }
-                label5.Text = password + "Поля 1пустые";
+                label5.Text = "Поля паролей разные";
 
             }
             else
@@ -72,29 +74,66 @@ namespace Registration
             bool startChar = false;
             foreach (string line in lines)
             {
+                Debug.WriteLine("line - " + line);
+
                 for (int i = 0; i < line.Length; i++)
                 {
-                    if (line[i] != ']' & stopChar == true)
+                    if (line[i] != '' & stopChar == true)
                         password += line[i];
-                    if(line[i] == ']')
+                    if(line[i] == '')
                     {
                         if (textBox2.Text == password & textBox1.Text.ToLower() == login.ToLower())
                             return true;
                     }
 
-                    if ((line[i] == '|'))
-                        startChar = true;
-
-                    if (line[i] != '['& startChar)
+                    if (line[i] != '' & startChar & !stopChar)
                         login += line[i];
-                    else
+
+                    if(line[i] == '')
                         stopChar = true;
+
+                    if ((line[i] == ''))
+                        startChar = true;
                 }
-             
                 password = "";
                 login = "";
-                stopChar = false;
 
+                stopChar = false;
+                startChar = false;
+
+            }
+            return false;
+        }
+        public bool ReadFileAndCheckLogin(string TextLogin)
+        {
+            string[] lines = File.ReadAllLines("SaveDate.txt");
+            bool stopChar = false;
+            bool startChar = false;
+            foreach (string line in lines)
+            {
+                Debug.WriteLine("line - " + line);
+
+                for (int i = 0; i < line.Length; i++)
+                {
+                    if (line[i] == '')
+                    {
+                        if (TextLogin.ToLower() == login.ToLower())
+                            return true;
+                    }
+
+                    if (line[i] != '' & startChar & !stopChar)
+                        login += line[i];
+
+                    if (line[i] == '')
+                        stopChar = true;
+
+                    if ((line[i] == ''))
+                        startChar = true;
+                }
+                login = "";
+
+                stopChar = false;
+                startChar = false;
 
             }
             return false;

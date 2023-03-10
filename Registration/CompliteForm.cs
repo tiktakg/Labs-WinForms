@@ -13,15 +13,14 @@ namespace Registration
    
     public partial class CompliteForm : Form
     {
-        internal static string password2, login;
 
        
         public CompliteForm()
         {       
             InitializeComponent();
            
-            label3.Text = AvtorisationForm.password;
-            label4.Text = AvtorisationForm.login;
+            label4.Text = AvtorisationForm.password;
+            label3.Text = AvtorisationForm.login;
 
         }     
     }
