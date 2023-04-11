@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace Registration
 {
@@ -18,9 +19,25 @@ namespace Registration
     {
         internal static string login, password = "";
 
+        private int numberOfAttempts = 0;
+        private double time = 0;
+        private bool isCapthaOpen = false;
+
         public AvtorisationForm()
         {
             InitializeComponent();
+
+            string[] Settings = File.ReadAllLines("TimeInformation.txt");
+            time = Convert.ToDouble(Settings[0]);
+
+            if(time != 0)
+            {
+                numberOfAttempts = 3;
+                button1.Enabled = false;
+                button2.Enabled = false;
+                button3.Enabled = false;
+            }
+
         }
 
 
@@ -51,11 +68,12 @@ namespace Registration
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text !="" & "" != textBox2.Text)
+            if (textBox1.Text != "" & "" != textBox2.Text)
             {
 
-                if(ReadFileAndCheckPass())
-                { 
+                if (ReadFileAndCheckPass())
+                {
+                    numberOfAttempts = 0;
                     Hide();
                     CompliteForm form2 = new CompliteForm();
                     form2.Show();
@@ -65,6 +83,16 @@ namespace Registration
             }
             else
                 label5.Text = "Поля пустые";
+
+            numberOfAttempts++;
+
+            if (numberOfAttempts >= 3)
+            {
+                button1.Enabled = false;
+                button2.Enabled = false;
+                button3.Enabled = false;
+            }
+
         }
 
         public bool ReadFileAndCheckPass()
@@ -80,7 +108,7 @@ namespace Registration
                 {
                     if (line[i] != '' & stopChar == true)
                         password += line[i];
-                    if(line[i] == '')
+                    if (line[i] == '')
                     {
                         if (textBox2.Text == password & textBox1.Text.ToLower() == login.ToLower())
                             return true;
@@ -89,7 +117,7 @@ namespace Registration
                     if (line[i] != '' & startChar & !stopChar)
                         login += line[i];
 
-                    if(line[i] == '')
+                    if (line[i] == '')
                         stopChar = true;
 
                     if ((line[i] == ''))
@@ -104,6 +132,45 @@ namespace Registration
             }
             return false;
         }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            FileStream fileForSaveData = File.Create("TimeInformation.txt");
+            string strTime = time.ToString();
+            fileForSaveData.Write(Encoding.Default.GetBytes(strTime), 0, strTime.Length);
+            fileForSaveData.Close();
+
+            if(numberOfAttempts >=3 & time <= 3)
+                time += 0.1f;
+            else if(time >= 3 & numberOfAttempts == 0)
+            {
+                time = 0;
+
+                button1.Enabled = true;
+                button2.Enabled = true;
+                button3.Enabled = true;
+
+            }
+
+            double t = Math.Round(time,0);
+            string TimeString = t.ToString();
+
+
+            label1.Text = "оставшееся время - " + TimeString;
+
+
+            if (time >= 3 &  numberOfAttempts == 3 & !isCapthaOpen)
+            {
+                isCapthaOpen = true;
+                this.Enabled = false;
+
+                Captha form3 = new Captha();
+                form3.Show();
+
+            }
+
+        }
+
         public bool ReadFileAndCheckLogin(string TextLogin)
         {
             string[] lines = File.ReadAllLines("SaveDate.txt");

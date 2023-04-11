@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Captha.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Captha.Designer.cs">
+      <DependentUpon>Captha.cs</DependentUpon>
+    </Compile>
     <Compile Include="CompliteForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     <Compile Include="RegistrationForm.Designer.cs">
       <DependentUpon>RegistrationForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Captha.resx">
+      <DependentUpon>Captha.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CompliteForm.resx">
       <DependentUpon>CompliteForm.cs</DependentUpon>
     </EmbeddedResource>
