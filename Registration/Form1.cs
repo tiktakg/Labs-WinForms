@@ -10,16 +10,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
+
 
 namespace Registration
 {
     public partial class AvtorisationForm : Form
     {
         internal static string login, password = "";
+        internal static int numberOfAttempts = 0;
 
-        private int numberOfAttempts = 0;
         private double time = 0;
         private bool isCapthaOpen = false;
 
@@ -140,7 +139,7 @@ namespace Registration
             fileForSaveData.Write(Encoding.Default.GetBytes(strTime), 0, strTime.Length);
             fileForSaveData.Close();
 
-            if(numberOfAttempts >=3 & time <= 3)
+            if(numberOfAttempts >=3 & time <= 30)
                 time += 0.1f;
             else if(time >= 3 & numberOfAttempts == 0)
             {
@@ -159,7 +158,7 @@ namespace Registration
             label1.Text = "оставшееся время - " + TimeString;
 
 
-            if (time >= 3 &  numberOfAttempts == 3 & !isCapthaOpen)
+            if (time >= 30 &  numberOfAttempts == 3 & !isCapthaOpen)
             {
                 isCapthaOpen = true;
                 this.Enabled = false;
@@ -169,6 +168,11 @@ namespace Registration
 
             }
 
+            if (time >= 0 & numberOfAttempts == 0 & isCapthaOpen)
+            {
+                isCapthaOpen = false;
+                this.Enabled = true;
+            }
         }
 
         public bool ReadFileAndCheckLogin(string TextLogin)

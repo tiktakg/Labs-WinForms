@@ -35,6 +35,8 @@ namespace Registration
             if(textBox1.Text == randomNumber)
             {
                 Hide();
+
+                AvtorisationForm.numberOfAttempts = 0;
             }
         }
     }
