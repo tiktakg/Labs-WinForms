@@ -7,9 +7,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 
 
 namespace Registration
@@ -25,11 +27,27 @@ namespace Registration
         public AvtorisationForm()
         {
             InitializeComponent();
+            string[] Settings;
 
-            string[] Settings = File.ReadAllLines("TimeInformation.txt");
+            try
+            {
+                Settings = File.ReadAllLines("TimeInformation.txt");
+            }
+            catch
+            {
+                FileStream f = new FileStream("TimeInformation.txt"  , FileMode.OpenOrCreate);
+                string text = "0";
+                byte[] buffer = Encoding.Default.GetBytes(text);
+                f.Write(buffer, 0, buffer.Length);
+                f.Close();
+                Settings = File.ReadAllLines("TimeInformation.txt");
+               
+
+            }
+
             time = Convert.ToDouble(Settings[0]);
 
-            if(time != 0)
+            if (time != 0)
             {
                 numberOfAttempts = 3;
                 button1.Enabled = false;
@@ -67,7 +85,7 @@ namespace Registration
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" & "" != textBox2.Text)
+            if (textBox1.Text != "" | "" != textBox2.Text)
             {
 
                 if (ReadFileAndCheckPass())
@@ -77,7 +95,7 @@ namespace Registration
                     CompliteForm form2 = new CompliteForm();
                     form2.Show();
                 }
-                label5.Text = "Поля паролей разные";
+                label5.Text = "Данные не верные";
 
             }
             else
@@ -139,9 +157,9 @@ namespace Registration
             fileForSaveData.Write(Encoding.Default.GetBytes(strTime), 0, strTime.Length);
             fileForSaveData.Close();
 
-            if(numberOfAttempts >=3 & time <= 30)
+            if (numberOfAttempts >= 3 & time <= 30)
                 time += 0.1f;
-            else if(time >= 3 & numberOfAttempts == 0)
+            else if (time >= 3 & numberOfAttempts == 0)
             {
                 time = 0;
 
@@ -151,14 +169,20 @@ namespace Registration
 
             }
 
-            double t = Math.Round(time,0);
-            string TimeString = t.ToString();
+            double t = 30 - Math.Round(time, 0);
+            if (t != 30)
+            {
+                string TimeString = t.ToString();
+                label1.Text = "оставшееся время - " + TimeString;
+            }
+            else
+            {
+                label1.Text = "";
+            }
 
 
-            label1.Text = "оставшееся время - " + TimeString;
 
-
-            if (time >= 30 &  numberOfAttempts == 3 & !isCapthaOpen)
+            if (time >= 30 & numberOfAttempts == 3 & !isCapthaOpen)
             {
                 isCapthaOpen = true;
                 this.Enabled = false;

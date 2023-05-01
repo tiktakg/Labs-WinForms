@@ -51,26 +51,29 @@
             // Login
             // 
             this.Login.AutoSize = true;
-            this.Login.Location = new System.Drawing.Point(31, 27);
+            this.Login.Location = new System.Drawing.Point(41, 33);
+            this.Login.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.Login.Name = "Login";
-            this.Login.Size = new System.Drawing.Size(38, 13);
+            this.Login.Size = new System.Drawing.Size(46, 16);
             this.Login.TabIndex = 0;
             this.Login.Text = "Логин";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 89);
+            this.label2.Location = new System.Drawing.Point(41, 110);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(45, 13);
+            this.label2.Size = new System.Drawing.Size(56, 16);
             this.label2.TabIndex = 1;
             this.label2.Text = "Пароль";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(34, 152);
+            this.button1.Location = new System.Drawing.Point(45, 187);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(125, 42);
+            this.button1.Size = new System.Drawing.Size(167, 52);
             this.button1.TabIndex = 2;
             this.button1.Text = "Вход";
             this.toolTip3.SetToolTip(this.button1, "Нажмите , чтобы пройти авторизацию");
@@ -79,9 +82,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(34, 200);
+            this.button2.Location = new System.Drawing.Point(45, 246);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(125, 42);
+            this.button2.Size = new System.Drawing.Size(167, 52);
             this.button2.TabIndex = 3;
             this.button2.Text = "Регистрация";
             this.toolTip4.SetToolTip(this.button2, "Нажмиете , чтобы зарегестироваться");
@@ -90,9 +94,10 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(34, 248);
+            this.button3.Location = new System.Drawing.Point(45, 305);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(125, 42);
+            this.button3.Size = new System.Drawing.Size(167, 52);
             this.button3.TabIndex = 4;
             this.button3.Text = "Выход";
             this.toolTip5.SetToolTip(this.button3, "Нажмите чтобы выйти из программы");
@@ -101,18 +106,20 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(34, 52);
+            this.textBox1.Location = new System.Drawing.Point(45, 64);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(125, 20);
+            this.textBox1.Size = new System.Drawing.Size(165, 22);
             this.textBox1.TabIndex = 5;
             this.toolTip1.SetToolTip(this.textBox1, "Введите логин, введенный в форме авторизации");
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(34, 115);
+            this.textBox2.Location = new System.Drawing.Point(45, 142);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox2.Name = "textBox2";
             this.textBox2.PasswordChar = '*';
-            this.textBox2.Size = new System.Drawing.Size(125, 20);
+            this.textBox2.Size = new System.Drawing.Size(165, 22);
             this.textBox2.TabIndex = 6;
             this.toolTip2.SetToolTip(this.textBox2, "Введите пароль, сохраненный ранне");
             // 
@@ -120,9 +127,10 @@
             // 
             this.button4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button4.BackgroundImage")));
             this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button4.Location = new System.Drawing.Point(165, 112);
+            this.button4.Location = new System.Drawing.Point(220, 138);
+            this.button4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(25, 25);
+            this.button4.Size = new System.Drawing.Size(33, 31);
             this.button4.TabIndex = 7;
             this.button4.UseVisualStyleBackColor = true;
             this.button4.MouseDown += new System.Windows.Forms.MouseEventHandler(this.button4_MouseDown);
@@ -131,9 +139,10 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(47, 9);
+            this.label5.Location = new System.Drawing.Point(41, 9);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(0, 13);
+            this.label5.Size = new System.Drawing.Size(0, 16);
             this.label5.TabIndex = 8;
             // 
             // toolTip1
@@ -179,17 +188,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 304);
+            this.label1.Location = new System.Drawing.Point(41, 374);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(44, 16);
             this.label1.TabIndex = 9;
             this.label1.Text = "label1";
             // 
             // AvtorisationForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(199, 326);
+            this.ClientSize = new System.Drawing.Size(265, 401);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button4);
@@ -200,6 +210,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.Login);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "AvtorisationForm";
             this.Text = "Авторизация";
             this.ResumeLayout(false);
