@@ -23,10 +23,14 @@ namespace Registration
         private void button2_Click(object sender, EventArgs e)
         {
 
+            FileStream fstream = new FileStream("SaveDate.txt", FileMode.OpenOrCreate);
+            fstream.Close();
             if (CheckStrings(textBox1.Text, textBox2.Text, textBox3.Text))
             {
                 if (CheckPass(textBox2.Text) & CheckPass(textBox3.Text))
                 {
+                    
+
                     File.AppendAllText($"SaveDate.txt", $"\u0010{textBox1.Text.ToLower()}\u0001{textBox2.Text}\u00020\n");
 
                     AvtorisationForm AvtForm= new AvtorisationForm();
@@ -42,6 +46,8 @@ namespace Registration
 
 
         }
+
+       
 
         private void button3_Click(object sender, EventArgs e)
         {

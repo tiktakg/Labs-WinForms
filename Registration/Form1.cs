@@ -23,6 +23,7 @@ namespace Registration
 
         private double time = 0;
         private bool isCapthaOpen = false;
+        private char role;
 
         public AvtorisationForm()
         {
@@ -92,10 +93,32 @@ namespace Registration
                 {
                     numberOfAttempts = 0;
                     Hide();
-                    CompliteForm form2 = new CompliteForm();
-                    form2.Show();
+
+                    if (role == '0')
+                    {
+                        Form2 form = new Form2();
+                        form.Show();
+                    }
+                    else if(role == '1')
+                    {
+                        Form3 form = new Form3();
+                        form.Show();
+                    }
+                    else if (role == '2')
+                    {
+                        Form4 form = new Form4();
+                        form.Show();
+                    }
+                    else if (role == '3')
+                    {
+                        CompliteForm form = new CompliteForm();
+                        form.Show();
+                    }
+
+
+                   
                 }
-                label5.Text = "Данные не верные";
+                label5.Text = "Такого пользователя нету";
 
             }
             else
@@ -127,6 +150,8 @@ namespace Registration
                         password += line[i];
                     if (line[i] == '')
                     {
+                        role = line[line.Length-1];
+                        
                         if (textBox2.Text == password & textBox1.Text.ToLower() == login.ToLower())
                             return true;
                     }
