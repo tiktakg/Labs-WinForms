@@ -67,13 +67,13 @@ namespace Registration
         private void button4_MouseDown(object sender, MouseEventArgs e)
         {
             textBox2.PasswordChar = '\0';
-            button4.BackgroundImage = Image.FromFile("C:\\Users\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\OpenEye.png");
+            button4.BackgroundImage = Image.FromFile("C:\\user_data\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\OpenEye.png");
         }
 
         private void button4_MouseUp(object sender, MouseEventArgs e)
         {
             textBox2.PasswordChar = '*';
-            button4.BackgroundImage = Image.FromFile("C:\\Users\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\CloseEye.png");
+            button4.BackgroundImage = Image.FromFile("C:\\user_data\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\CloseEye.png");
         }
 
 
