@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -16,7 +17,7 @@ namespace Registration
 
         private double time = 0;
         private bool isCapthaOpen = false;
-        private char role;
+        internal static string role;
 
         public AvtorisationForm()
         {
@@ -67,49 +68,46 @@ namespace Registration
         private void button4_MouseDown(object sender, MouseEventArgs e)
         {
             textBox2.PasswordChar = '\0';
-            button4.BackgroundImage = Image.FromFile("C:\\user_data\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\OpenEye.png");
+            button4.BackgroundImage = Image.FromFile("C:\\Users\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\OpenEye.png");
         }
 
         private void button4_MouseUp(object sender, MouseEventArgs e)
         {
             textBox2.PasswordChar = '*';
-            button4.BackgroundImage = Image.FromFile("C:\\user_data\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\CloseEye.png");
+            button4.BackgroundImage = Image.FromFile("C:\\Users\\gupli\\source\\repos\\tiktakg\\Labs-WinForms\\Registration\\Resources\\CloseEye.png");
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" | "" != textBox2.Text)
+            if (textBox1.Text != "" & "" != textBox2.Text)
             {
 
-                if (ReadFileAndCheckPass())
+                if (ReadDB())
                 {
                     numberOfAttempts = 0;
                     Hide();
 
-                    if (role == '0')
+                    if (role == "0")
                     {
                         Form2 form = new Form2();
                         form.Show();
                     }
-                    else if(role == '1')
+                    else if(role == "1")
                     {
                         Form3 form = new Form3();
                         form.Show();
                     }
-                    else if (role == '2')
+                    else if (role == "2")
                     {
                         Form4 form = new Form4();
                         form.Show();
                     }
-                    else if (role == '3')
+                    else if (role == "3")
                     {
                         CompliteForm form = new CompliteForm();
                         form.Show();
-                    }
-
-
-                   
+                    }                   
                 }
                 label5.Text = "Такого пользователя нету";
 
@@ -128,42 +126,19 @@ namespace Registration
 
         }
 
-        public bool ReadFileAndCheckPass()
+        public bool ReadDB()
         {
-            string[] lines = File.ReadAllLines("SaveDate.txt");
-            bool stopChar = false;
-            bool startChar = false;
-            foreach (string line in lines)
+            using (DBContext DB = new DBContext())
             {
-                Debug.WriteLine("line - " + line);
-
-                for (int i = 0; i < line.Length; i++)
-                {
-                    if (line[i] != '' & stopChar == true)
-                        password += line[i];
-                    if (line[i] == '')
+                var users = DB.user_data.ToList();
+                foreach (user_data user in users)
+                    if (textBox1.Text.ToLower() == user.login_user.ToLower() & textBox2.Text == user.password_user)
                     {
-                        role = line[line.Length-1];
-                        
-                        if (textBox2.Text == password & textBox1.Text.ToLower() == login.ToLower())
-                            return true;
+                        login = textBox1.Text;
+                        password = textBox2.Text;
+                        role = user.id_role.ToString();
+                        return true;
                     }
-
-                    if (line[i] != '' & startChar & !stopChar)
-                        login += line[i];
-
-                    if (line[i] == '')
-                        stopChar = true;
-
-                    if ((line[i] == ''))
-                        startChar = true;
-                }
-                password = "";
-                login = "";
-
-                stopChar = false;
-                startChar = false;
-
             }
             return false;
         }
@@ -217,40 +192,16 @@ namespace Registration
             }
         }
 
-        public bool ReadFileAndCheckLogin(string TextLogin)
+        public bool checkLogin(string TextLogin,string TextPassword)
         {
-            string[] lines = File.ReadAllLines("SaveDate.txt");
-            bool stopChar = false;
-            bool startChar = false;
-            foreach (string line in lines)
+            using (DBContext DB = new DBContext())
             {
-                Debug.WriteLine("line - " + line);
-
-                for (int i = 0; i < line.Length; i++)
-                {
-                    if (line[i] == '')
-                    {
-                        if (TextLogin.ToLower() == login.ToLower())
-                            return true;
-                    }
-
-                    if (line[i] != '' & startChar & !stopChar)
-                        login += line[i];
-
-                    if (line[i] == '')
-                        stopChar = true;
-
-                    if ((line[i] == ''))
-                        startChar = true;
-                }
-                login = "";
-
-                stopChar = false;
-                startChar = false;
-
+                var users = DB.user_data.ToList();
+                foreach (user_data user in users)
+                    if (TextLogin.ToLower() == user.login_user.ToLower() & TextPassword == user.password_user)
+                        return false;
             }
-            return false;
+            return true;
         }
-
     }
 }

@@ -15,6 +15,7 @@ namespace Registration
         public Form4()
         {
             InitializeComponent();
+            Size = new System.Drawing.Size(300, 250);
         }
     }
 }
