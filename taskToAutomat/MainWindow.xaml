@@ -1,0 +1,46 @@
+﻿<Window x:Class="taskToAutomat.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:taskToAutomat"
+        mc:Ignorable="d"
+        Title="Главное окно" Height="450" Width="800">
+    <Grid>
+        <Grid Background="Gray">
+
+            <StackPanel>
+                <TextBlock  Text="Реши примеры" FontSize="25" VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
+                    <WrapPanel>
+                    <TextBox Margin="25" Width="300 " Text="Введи кол-во примеров" FontSize="25" ></TextBox>
+                    <Button Margin="25" Click="MakeNewSamples_Click">Сгеририовать примеры</Button>
+                    <Button Margin="25" Click="ShowAnswer_Click">Показать ответы</Button>
+                    </WrapPanel>
+                <WrapPanel>
+                    <CheckBox FontSize="15">безударная гласная</CheckBox>
+                    <CheckBox FontSize="15">словарное слово</CheckBox>
+                    <CheckBox FontSize="15">окончания склонений</CheckBox>
+                    <CheckBox FontSize="15">глухие согласные</CheckBox>
+                    
+                </WrapPanel>
+                <Expander>
+                    <DataGrid x:Name="gridWithSamples" FontSize="15" Background="White">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Пример"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Ответ"></DataGridTextColumn>
+                            <DataGridTextColumn Header="Правильный ответ"></DataGridTextColumn>
+  
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+                </Expander>
+            </StackPanel>
+
+            
+       
+           
+        </Grid>
+        
+    </Grid>
+</Window>
