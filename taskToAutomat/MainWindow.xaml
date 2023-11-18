@@ -5,66 +5,126 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:taskToAutomat"
         mc:Ignorable="d"
-        Title="Главное окно" Height="450" Width="800">
+        Title="Главное окно"
+        Height="450"
+        Width="800">
     <Grid>
         <Grid Background="Gray">
 
             <StackPanel>
-                <TextBlock x:Name="test" Text="Реши примеры" FontSize="25"  VerticalAlignment="Top" HorizontalAlignment="Center"></TextBlock>
-                    <WrapPanel>
-                    <TextBox Margin="25" Width="300 " Text="Введи кол-во примеров" FontSize="25" ></TextBox>
-                    <Button Margin="25" Click="MakeNewSamples_Click">Сгеририовать примеры</Button>
-                    <Button Margin="25" Click="ShowAnswer_Click">Показать ответы</Button>
-                    </WrapPanel>
-                <WrapPanel>
-                    <CheckBox FontSize="15">безударная гласная</CheckBox>
-                    <CheckBox FontSize="15">словарное слово</CheckBox>
-                    <CheckBox FontSize="15">окончания склонений</CheckBox>
-                    <CheckBox FontSize="15">глухие согласные</CheckBox>
+                <TextBlock  Text="Реши примеры"
+                            FontSize="25"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Center"></TextBlock>
+                <WrapPanel ItemHeight="40">
+                    <TextBox x:Name="countSamples_textBox"
+                            
+                             Text="Введи кол-во примеров"
+                             Opacity="0.7"
+                             VerticalContentAlignment="Center"
+                             HorizontalContentAlignment="Center"
+                             FontSize="15"
+                             GotFocus="CountSamples_gotFocus"
+                             LostFocus="CountSamples_lostFocus"
+                             Margin="10,0,10,0"
+                             Width="200"></TextBox>
+                    <Button x:Name="makeNewSamples_button"
+                            Click="MakeNewSamples_Click"
+                            Content="Создать примеры"
+                            Opacity="0.7"
+                            FontSize="15"
+                            Margin="10,0,10,0"
+                            Width="150"></Button>
+                    <Button Click="ShowAnswer_Click"
+                            Opacity="0.7"
+                            FontSize="15"
+                            Margin="10,0,10,0"
+                            Width="150">Показать ответы</Button>
+                    <StackPanel>
+                        <TextBlock x:Name="markOfWork_textBlock"
+                                   Text="Оценка: "
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,10,0"
+                                   FontSize="15"></TextBlock>
+                        
+                        <TextBlock x:Name="timer_textBlock"
+                                   Text="Прошло времени: "
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,10,0"
+                                   FontSize="15"></TextBlock>
+                       
+                    </StackPanel>
                     
                 </WrapPanel>
-                <Expander>
-                    <DataGrid x:Name="gridWithSamples" FontSize="15" Background="White">
+                <WrapPanel>
+                    <CheckBox x:Name="unstressedVowel_checkBox" FontSize="15"
+                              Margin="10">безударная гласная</CheckBox>
+                    <CheckBox x:Name="vocabularyWord_checkBox" FontSize="15"
+                              Margin="10">словарное слово</CheckBox>
+                    <CheckBox x:Name="endingsOfDeclensions_checkBox" FontSize="15"
+                              Margin="10">окончания склонений</CheckBox>
+                    <CheckBox x:Name="voicelessConsonants_checkBox" FontSize="15"
+                              Margin="10">глухие согласные</CheckBox>
+                </WrapPanel>
+                <Expander x:Name="expanderOfDataGrid" >
+                    <DataGrid x:Name="gridWithSamples"
+                              FontSize="15"
+                              Background="White">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Width="100" Header="ID" Binding="{Binding ID}"></DataGridTextColumn>
-                            <DataGridTextColumn Width="100" Header="Sample" Binding="{Binding Sample}"></DataGridTextColumn>
-                            <DataGridTextColumn Width="100" Header="TrueAnswer" Binding="{Binding TrueAnswer}" Visibility="Hidden"></DataGridTextColumn>
-                            <DataGridTextColumn Width="100" Header="Status" Binding="{Binding Status}" Visibility="Hidden"></DataGridTextColumn>
-                            
-                            
-                           <!--<DataGridTextColumn Header="Answer" Binding="{Binding Answer}"></DataGridTextColumn>-->
+                            <DataGridTextColumn Width="150"
+                                                Header="ID"
+                                                IsReadOnly="True"
+                                                Binding="{Binding ID}"></DataGridTextColumn>
+                            <DataGridTextColumn Width="150"
+                                                Header="Sample"
+                                                IsReadOnly="True"
+                                                Binding="{Binding Sample}"></DataGridTextColumn>
+                            <DataGridTextColumn Width="150"
+                                                Header="TrueAnswer"
+                                                Binding="{Binding TrueAnswer}"
+                                                IsReadOnly="True"
+                                                Visibility="Hidden"></DataGridTextColumn>
+                            <DataGridTextColumn Width="0"
+                                                Header="Status"
+                                                Binding="{Binding Status}"
+                                                IsReadOnly="True"
+                                                Visibility="Hidden" ></DataGridTextColumn>
+
                             <DataGridTemplateColumn Header="Answer">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <TextBox x:Name="Answer" Width="100" Text=""/>
+                                        <TextBox x:Name="Answer"
+                                                 Width="100"
+                                                 Text="{Binding Answer,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            
+
                         </DataGrid.Columns>
                         <DataGrid.ItemContainerStyle>
                             <Style TargetType="DataGridRow">
-                                <Setter Property="Background" Value="White" />
+                                <Setter Property="Background"
+                                        Value="White" />
                                 <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Status}" Value="true">
-                                        <Setter Property="Background" Value="Green" />
+                                    <DataTrigger Binding="{Binding Status}"
+                                                 Value="true">
+                                        <Setter Property="Background"
+                                                Value="Green" />
                                     </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="false">
-                                        <Setter Property="Background" Value="Red" />
+                                    <DataTrigger Binding="{Binding Status}"
+                                                 Value="false">
+                                        <Setter Property="Background"
+                                                Value="Red" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </DataGrid.ItemContainerStyle>
                     </DataGrid>
 
-                    
                 </Expander>
             </StackPanel>
 
-            
-       
-           
         </Grid>
-        
+
     </Grid>
 </Window>

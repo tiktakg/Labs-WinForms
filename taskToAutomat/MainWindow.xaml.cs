@@ -1,26 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace taskToAutomat
 {
- 
     public partial class MainWindow : Window
     {
-        ObservableCollection<Samples> dataCollection = new ObservableCollection<Samples>();
+        #region make a variable
+        double countOfTimerSeconds , countOfTrueAnswer, countOfSamples;
+       
+
+        ObservableCollection<Samples> collectionOfSamples = new ObservableCollection<Samples>();
+        DispatcherTimer timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.001) };
+        #endregion
 
         public MainWindow()
         {
@@ -29,44 +23,83 @@ namespace taskToAutomat
 
         private void MakeNewSamples_Click(object sender, RoutedEventArgs e)
         {
-            Samples sample = new Samples(1,"test","test1","test2");
-            dataCollection.Add(sample);
-            gridWithSamples.Items.Add(sample);
+            gridWithSamples.Items.Clear();
+            countOfTrueAnswer = 0;
+
+            if (countSamples_textBox.Text != "")
+                if (double.TryParse(countSamples_textBox.Text, out countOfSamples))
+                { 
+                    timer.Tick += new EventHandler(TimerTick);
+
+                    for (int i = 0; i < countOfSamples; i++)
+                    {
+                        Samples sample = new Samples(i, "test" + i.ToString(), "", "test2");
+
+                        collectionOfSamples.Add(sample);
+                        gridWithSamples.Items.Add(sample);
+                    }
+
+                    makeNewSamples_button.IsEnabled = false;
+                    timer.Start();
+                }
+                else
+                    MessageBox.Show("Не правильные количество примеров");
+
         }
 
         private void ShowAnswer_Click(object sender, RoutedEventArgs e)
         {
             var allItems = gridWithSamples.Items;
 
+            int indexOfDataGrid = 0;
 
-
-            //Samples selectedItem = (Samples)gridWithSamples.hea.SelectedItem;
-
-            Samples itemToModify = dataCollection[0];
-
-            Samples sample = new Samples(5, "t2est", "te2st1", "tes2t2");
-          
-
-
-            int index = 0;
-            foreach (Samples item in allItems)
+            foreach (Samples sample in allItems)
             {
-                if (item.Answer != item.TrueAnswer)
+                if (sample.Answer == sample.TrueAnswer)
                 {
-                    dataCollection[index].Status = false;
+                    collectionOfSamples[indexOfDataGrid].Status = true;
+                    countOfTrueAnswer++;
                 }
                 else
-                {
-                    dataCollection[index].Status = true;
-                }
+                    collectionOfSamples[indexOfDataGrid].Status = false;
 
-                //dataCollection[index];
-                index++;
+                indexOfDataGrid++;     
             }
 
+
+            markOfWork_textBlock.Text = calculateMark().ToString();
             gridWithSamples.Items.Refresh();
+            timer.Stop();
+            timer_textBlock.Text = Math.Round(countOfTimerSeconds,3).ToString();
 
+            makeNewSamples_button.IsEnabled = true;
+            countOfTimerSeconds = 0;
+        }
 
+        private int calculateMark()
+        {
+            int mark = 0;
+            double finalPercentage = 0;
+
+            finalPercentage = countOfTrueAnswer / countOfSamples * 100;
+  
+            if (finalPercentage > 90)
+                mark = 5;
+            else if(finalPercentage > 75)
+                mark = 4;
+            else if (finalPercentage > 55)
+                mark = 3;
+            else
+                mark = 2;
+
+            return mark;
+        }
+        private void TimerTick(object sender, EventArgs e) => countOfTimerSeconds+= 0.001;
+        private void CountSamples_gotFocus(object sender, RoutedEventArgs e) => countSamples_textBox.Text = "";
+        private void CountSamples_lostFocus(object sender, RoutedEventArgs e)
+        {
+            if(countSamples_textBox.Text == "")
+                countSamples_textBox.Text = "Введи кол-во примеров";
         }
     }
     public class Samples
