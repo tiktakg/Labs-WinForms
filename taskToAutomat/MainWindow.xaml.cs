@@ -12,7 +12,7 @@ namespace taskToAutomat
     {
         #region make a variable
         double countOfTimerSeconds , countOfTrueAnswer, countOfSamples;
-       
+     
 
         ObservableCollection<Samples> collectionOfSamples = new ObservableCollection<Samples>();
         DispatcherTimer timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.001) };
@@ -22,59 +22,7 @@ namespace taskToAutomat
             InitializeComponent();
         }
 
-        private void MakeNewSamples_Click(object sender, RoutedEventArgs e)
-        {
-            takeDataFromDB();
-
-            gridWithSamples.Items.Clear();
-            countOfTrueAnswer = 0;
-
-            if (countSamples_textBox.Text != "" )
-                if (double.TryParse(countSamples_textBox.Text, out countOfSamples))
-                {
-                    timer.Tick += new EventHandler(TimerTick);
-
-                    takeDataFromDB();
-
-                    makeNewSamples_button.IsEnabled = false;
-                    timer.Start();
-                }
-            else
-                MessageBox.Show("Не правильные количество примеров или не выбарнны примеры");
-        }
-
-        private void ShowAnswer_Click(object sender, RoutedEventArgs e)
-        {
-            var allItems = gridWithSamples.Items;
-
-            var idColumn = gridWithSamples.Columns.FirstOrDefault(column => column.Header.ToString() == "TrueAnswer") as DataGridTextColumn;
-
-            idColumn.Visibility = Visibility.Visible;
-
-            int indexOfDataGrid = 0;
-
-            foreach (Samples sample in allItems)
-            {
-                if (sample.Answer == sample.TrueAnswer)
-                {
-                    collectionOfSamples[indexOfDataGrid].Status = true;
-                    countOfTrueAnswer++;
-                }
-                else
-                    collectionOfSamples[indexOfDataGrid].Status = false;
-
-                indexOfDataGrid++;     
-            }
-
-
-            markOfWork_textBlock.Text = calculateMark().ToString();
-            gridWithSamples.Items.Refresh();
-            timer.Stop();
-            timer_textBlock.Text = Math.Round(countOfTimerSeconds,3).ToString();
-
-            makeNewSamples_button.IsEnabled = true;
-            countOfTimerSeconds = 0;
-        }
+        #region tools method
         private void takeDataFromDB()
         {
             using (DBContext Db = new DBContext())
@@ -85,20 +33,22 @@ namespace taskToAutomat
                 foreach (samplesFromDB sample in samples)
                 {
                     Samples sampleForDataGrid = null;
-                    if (unstressedVowel1_checkBox.IsEnabled & sample.idParametr == 1)
-                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
-                    else if (vocabularyWord2_checkBox.IsEnabled & sample.idParametr == 2)
-                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
-                    else if(endingsOfDeclensions3_checkBox.IsEnabled & sample.idParametr == 3)
-                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
-                    else if(voicelessConsonants4_checkBox.IsEnabled & sample.idParametr == 4)
-                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
+
+
+                    if ((bool)unstressedVowel1_checkBox.IsChecked & sample.idParametr == 1)
+                         sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, sample.TrueSamples);
+                    else if ((bool)vocabularyWord2_checkBox.IsChecked & sample.idParametr == 2)
+                         sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, sample.TrueSamples);
+                    else if ((bool)endingsOfDeclensions3_checkBox.IsChecked & sample.idParametr == 3)
+                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, sample.TrueSamples);
+                    else if ((bool)voicelessConsonants4_checkBox.IsChecked & sample.idParametr == 5)
+                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, sample.TrueSamples);
 
                     collectionOfSamples.Add(sampleForDataGrid);
                     gridWithSamples.Items.Add(sampleForDataGrid);
                     currentCountOfSamples++;
 
-                    if(currentCountOfSamples == samples.Count) 
+                    if(currentCountOfSamples >= countOfSamples) 
                         break;
                 }
             }
@@ -122,12 +72,75 @@ namespace taskToAutomat
             return mark;
         }
         private void TimerTick(object sender, EventArgs e) => countOfTimerSeconds+= 0.001;
+        private void clearElemnts()
+        {
+            countOfSamples = 0;
+            countOfTrueAnswer = 0;
+            countOfTimerSeconds = 0;
+
+            timer_textBlock.Text = "";
+            markOfWork_textBlock.Text = "";
+
+            gridWithSamples.Items.Clear();
+            (gridWithSamples.Columns.FirstOrDefault(column => column.Header.ToString() == "TrueAnswer") as DataGridTextColumn).Visibility = Visibility.Hidden;
+        }
+        #endregion
+
+        #region method of xmal elemnts
+        private void MakeNewSamples_Click(object sender, RoutedEventArgs e)
+        {
+            clearElemnts();
+
+            if (countSamples_textBox.Text != "")
+                if (double.TryParse(countSamples_textBox.Text, out countOfSamples))
+                {
+                    timer.Tick += new EventHandler(TimerTick);
+
+                    takeDataFromDB();
+
+                    makeNewSamples_button.IsEnabled = false;
+                    timer.Start();
+                }
+                else
+                    MessageBox.Show("Не правильные количество примеров или не выбарнны примеры");
+        }
+        private void ShowAnswer_Click(object sender, RoutedEventArgs e)
+        {
+
+            int indexOfDataGrid = 0;
+
+            var allItems = gridWithSamples.Items;
+
+            (gridWithSamples.Columns.FirstOrDefault(column => column.Header.ToString() == "TrueAnswer") as DataGridTextColumn).Visibility = Visibility.Visible;
+
+            foreach (Samples sample in allItems)
+            {
+                if (sample.Answer == sample.TrueAnswer)
+                {
+                    collectionOfSamples[indexOfDataGrid].Status = true;
+                    countOfTrueAnswer++;
+                }
+                else
+                    collectionOfSamples[indexOfDataGrid].Status = false;
+
+                indexOfDataGrid++;
+            }
+
+            timer.Stop();
+            gridWithSamples.Items.Refresh();
+
+            markOfWork_textBlock.Text = calculateMark().ToString();
+            timer_textBlock.Text = Math.Round(countOfTimerSeconds, 3).ToString();
+
+            makeNewSamples_button.IsEnabled = true;
+        }
         private void CountSamples_gotFocus(object sender, RoutedEventArgs e) => countSamples_textBox.Text = "";
         private void CountSamples_lostFocus(object sender, RoutedEventArgs e)
         {
             if(countSamples_textBox.Text == "")
                 countSamples_textBox.Text = "Введи кол-во примеров";
         }
+        #endregion
     }
     public class Samples
     {
@@ -137,11 +150,11 @@ namespace taskToAutomat
         public string TrueAnswer { get; set; }
         public bool? Status { get; set; }
 
-        public Samples(int id, string sample, string answer, string trueAnswer)
+        public Samples(int id, string sample, string trueAnswer)
         {
             ID = id;
             Sample = sample;
-            Answer = answer;
+            Answer = "";
             TrueAnswer = trueAnswer;
             Status = null;
         }
