@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace taskToAutomat
@@ -15,7 +17,6 @@ namespace taskToAutomat
         ObservableCollection<Samples> collectionOfSamples = new ObservableCollection<Samples>();
         DispatcherTimer timer = new DispatcherTimer() { Interval = TimeSpan.FromSeconds(0.001) };
         #endregion
-
         public MainWindow()
         {
             InitializeComponent();
@@ -23,33 +24,32 @@ namespace taskToAutomat
 
         private void MakeNewSamples_Click(object sender, RoutedEventArgs e)
         {
+            takeDataFromDB();
+
             gridWithSamples.Items.Clear();
             countOfTrueAnswer = 0;
 
-            if (countSamples_textBox.Text != "")
+            if (countSamples_textBox.Text != "" )
                 if (double.TryParse(countSamples_textBox.Text, out countOfSamples))
-                { 
+                {
                     timer.Tick += new EventHandler(TimerTick);
 
-                    for (int i = 0; i < countOfSamples; i++)
-                    {
-                        Samples sample = new Samples(i, "test" + i.ToString(), "", "test2");
-
-                        collectionOfSamples.Add(sample);
-                        gridWithSamples.Items.Add(sample);
-                    }
+                    takeDataFromDB();
 
                     makeNewSamples_button.IsEnabled = false;
                     timer.Start();
                 }
-                else
-                    MessageBox.Show("Не правильные количество примеров");
-
+            else
+                MessageBox.Show("Не правильные количество примеров или не выбарнны примеры");
         }
 
         private void ShowAnswer_Click(object sender, RoutedEventArgs e)
         {
             var allItems = gridWithSamples.Items;
+
+            var idColumn = gridWithSamples.Columns.FirstOrDefault(column => column.Header.ToString() == "TrueAnswer") as DataGridTextColumn;
+
+            idColumn.Visibility = Visibility.Visible;
 
             int indexOfDataGrid = 0;
 
@@ -75,7 +75,34 @@ namespace taskToAutomat
             makeNewSamples_button.IsEnabled = true;
             countOfTimerSeconds = 0;
         }
+        private void takeDataFromDB()
+        {
+            using (DBContext Db = new DBContext())
+            {             
+                var samples = Db.samples.ToList();
 
+                int currentCountOfSamples = 0;
+                foreach (samplesFromDB sample in samples)
+                {
+                    Samples sampleForDataGrid = null;
+                    if (unstressedVowel1_checkBox.IsEnabled & sample.idParametr == 1)
+                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
+                    else if (vocabularyWord2_checkBox.IsEnabled & sample.idParametr == 2)
+                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
+                    else if(endingsOfDeclensions3_checkBox.IsEnabled & sample.idParametr == 3)
+                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
+                    else if(voicelessConsonants4_checkBox.IsEnabled & sample.idParametr == 4)
+                        sampleForDataGrid = new Samples(currentCountOfSamples, sample.Samples, "", sample.TrueSamples);
+
+                    collectionOfSamples.Add(sampleForDataGrid);
+                    gridWithSamples.Items.Add(sampleForDataGrid);
+                    currentCountOfSamples++;
+
+                    if(currentCountOfSamples == samples.Count) 
+                        break;
+                }
+            }
+        }
         private int calculateMark()
         {
             int mark = 0;
